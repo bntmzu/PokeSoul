@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Pokémon Echo – Question {{ current_index }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+  <!-- Question Header -->
+  <h4 class="mb-3">Question {{ current_index }} of {{ total_questions }}</h4>
+
+  <!-- Progress Bar -->
+  <div class="mb-4">
+    <div class="d-flex justify-content-between">
+      <span>Progress:</span>
+      <span>{{ progress_percent }}%</span>
+    </div>
+    <div class="progress">
+      <div class="progress-bar" role="progressbar"
+           style="width: {{ progress_percent }}%;"
+           aria-valuenow="{{ progress_percent }}"
+           aria-valuemin="0"
+           aria-valuemax="100">
+        {{ progress_percent }}%
+      </div>
+    </div>
+  </div>
+
+  <!-- Question Card -->
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">{{ question.text }}</h5>
+
+      <form method="post">
+        {% csrf_token %}
+
+        <!-- Options as radio buttons -->
+        {% for option in options %}
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="radio" name="answer"
+                   id="option{{ forloop.counter }}" value="{{ option.id }}">
+            <label class="form-check-label" for="option{{ forloop.counter }}">
+              {{ option.text }}
+            </label>
+          </div>
+        {% endfor %}
+
+        {% if error %}
+          <div class="text-danger mt-2">{{ error }}</div>
+        {% endif %}
+
+        <!-- Navigation buttons -->
+        <div class="d-flex justify-content-between mt-4">
+          <button type="submit" class="btn btn-primary">Next →</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

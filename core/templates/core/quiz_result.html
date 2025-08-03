@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Your Pokémon Match{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+  <h2 class="mb-4">Your Soul Pokémon is...</h2>
+
+  <h1 class="display-4 text-primary mb-3">{{ pokemon.name|capfirst }}</h1>
+
+  {% if pokemon.sprite_url %}
+    <img src="{{ pokemon.sprite_url }}" alt="{{ pokemon.name }}" class="img-fluid mb-4" style="max-height: 200px;">
+  {% endif %}
+
+  <p class="lead">{{ pokemon.flavor_text }}</p>
+
+  <div class="mt-4">
+    <a href="{% url 'quiz_reset' %}" class="btn btn-outline-primary">Take the Quiz Again</a>
+  </div>
+</div>
+{% endblock %}
