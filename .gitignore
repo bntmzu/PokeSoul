@@ -1,0 +1,81 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+
+# Compiled files and metadata
+*.so
+*.egg-info/
+*.egg
+*.log
+
+# Virtual environments and Poetry
+.venv/
+venv/
+.poetry/
+.mypy_cache/
+.pytest_cache/
+
+# Environment variables
+.env
+#.env.*
+
+# Django-specific
+db.sqlite3
+media/
+staticfiles/
+instance/
+local_settings.py
+
+# Ignore all migration cache and compiled files
+**/migrations/__pycache__/
+**/migrations/*.pyc
+
+# IDE and editor config
+.idea/
+.vscode/
+*.iml
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Docker artifacts
+*.pid
+*.pid.lock
+docker-compose.override.yml
+
+# Test and coverage artifacts
+htmlcov/
+.coverage
+.coverage.*
+.tox/
+nosetests.xml
+coverage.xml
+*.cover
+test-results.xml
+junit*.xml
+
+# Build artifacts
+build/
+dist/
+*.tar.gz
+
+# PEP 582 cache
+__pypackages__/
+
+# PostgreSQL dumps or temp files
+*.psql
+*.dump
+
+# Frontend (if React is used later)
+node_modules/
+*.map
+
+# Temp files and swap
+tmp/
+uploads/
+temp/
+*.swp
