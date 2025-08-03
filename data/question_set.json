@@ -1,0 +1,162 @@
+[
+  {
+    "identifier": "time_of_day",
+    "text": "What time of day do you prefer?",
+    "options": [
+      { "text": "Morning", "value": "{\"type\": \"grass\", \"color\": \"green\"}" },
+      { "text": "Afternoon", "value": "{\"type\": \"fire\", \"color\": \"red\"}" },
+      { "text": "Evening", "value": "{\"type\": \"electric\", \"color\": \"yellow\"}" },
+      { "text": "Night", "value": "{\"type\": \"dark\", \"color\": \"black\"}" }
+    ]
+  },
+  {
+    "identifier": "element_resonance",
+    "text": "Which element resonates with you the most?",
+    "options": [
+      { "text": "Fire", "value": "{\"type\": \"fire\"}" },
+      { "text": "Water", "value": "{\"type\": \"water\"}" },
+      { "text": "Air", "value": "{\"type\": \"flying\"}" },
+      { "text": "Earth", "value": "{\"type\": \"ground\"}" }
+    ]
+  },
+  {
+    "identifier": "conflict_handling",
+    "text": "How do you usually handle conflict?",
+    "options": [
+      { "text": "I fight", "value": "{\"stat\": \"attack\"}" },
+      { "text": "I flee", "value": "{\"type\": \"ghost\"}" },
+      { "text": "I analyze", "value": "{\"stat\": \"special-attack\"}" },
+      { "text": "I calm things down", "value": "{\"ability\": \"serene-grace\"}" }
+    ]
+  },
+  {
+    "identifier": "journey_goal",
+    "text": "What do you seek in a journey?",
+    "options": [
+      { "text": "Adventure", "value": "{\"type\": \"fighting\"}" },
+      { "text": "Answers", "value": "{\"type\": \"psychic\"}" },
+      { "text": "Safety", "value": "{\"type\": \"steel\"}" },
+      { "text": "Friends", "value": "{\"ability\": \"friend-guard\"}" }
+    ]
+  },
+  {
+    "identifier": "favorite_color",
+    "text": "Which color do you identify with most?",
+    "options": [
+      { "text": "Blue", "value": "{\"color\": \"blue\"}" },
+      { "text": "Red", "value": "{\"color\": \"red\"}" },
+      { "text": "Black", "value": "{\"color\": \"black\"}" },
+      { "text": "White", "value": "{\"color\": \"white\"}" }
+    ]
+  },
+  {
+    "identifier": "shape_preference",
+    "text": "Which shape or form appeals to you most?",
+    "options": [
+      { "text": "Winged", "value": "{\"shape\": \"wings\"}" },
+      { "text": "Furry", "value": "{\"shape\": \"quadruped\"}" },
+      { "text": "Spiky", "value": "{\"shape\": \"armor\"}" },
+      { "text": "Amorphous", "value": "{\"shape\": \"blob\"}" }
+    ]
+  },
+  {
+    "identifier": "current_feeling",
+    "text": "How do you feel right now?",
+    "options": [
+      { "text": "Strong", "value": "{\"stat\": \"defense\"}" },
+      { "text": "Wise", "value": "{\"type\": \"psychic\"}" },
+      { "text": "Invisible", "value": "{\"type\": \"ghost\"}" },
+      { "text": "Radiant", "value": "{\"type\": \"electric\"}" }
+    ]
+  },
+  {
+    "identifier": "weather_preference",
+    "text": "What's your favorite weather?",
+    "options": [
+      { "text": "Rain", "value": "{\"ability\": \"rain-dish\"}" },
+      { "text": "Sun", "value": "{\"ability\": \"solar-power\"}" },
+      { "text": "Snow", "value": "{\"ability\": \"ice-body\"}" },
+      { "text": "Fog", "value": "{\"type\": \"fairy\"}" }
+    ]
+  },
+  {
+    "identifier": "social_orientation",
+    "text": "Are you more introverted or extroverted?",
+    "options": [
+      { "text": "Introverted", "value": "{\"type\": \"ghost\"}" },
+      { "text": "Extroverted", "value": "{\"type\": \"normal\"}" },
+      { "text": "Depends", "value": "{\"type\": \"normal\"}" },
+      { "text": "Chaotic", "value": "{\"type\": \"dragon\"}" }
+    ]
+  },
+  {
+    "identifier": "superpower_choice",
+    "text": "Which superpower would you choose?",
+    "options": [
+      { "text": "Healing", "value": "{\"ability\": \"natural-cure\"}" },
+      { "text": "Speed", "value": "{\"stat\": \"speed\"}" },
+      { "text": "Magic", "value": "{\"type\": \"fairy\"}" },
+      { "text": "Strength", "value": "{\"stat\": \"attack\"}" }
+    ]
+  },
+  {
+    "identifier": "problem_solving",
+    "text": "How do you usually solve problems?",
+    "options": [
+      { "text": "Logic", "value": "{\"stat\": \"special-attack\"}" },
+      { "text": "Intuition", "value": "{\"type\": \"psychic\"}" },
+      { "text": "Feelings", "value": "{\"type\": \"fairy\"}" },
+      { "text": "Chance", "value": "{\"type\": \"dark\"}" }
+    ]
+  },
+  {
+    "identifier": "core_value",
+    "text": "What matters to you most?",
+    "options": [
+      { "text": "Freedom", "value": "{\"type\": \"flying\"}" },
+      { "text": "Power", "value": "{\"stat\": \"attack\"}" },
+      { "text": "Peace", "value": "{\"color\": \"blue\"}" },
+      { "text": "Faith", "value": "{\"type\": \"fairy\"}" }
+    ]
+  },
+  {
+    "identifier": "team_role",
+    "text": "What role do you take in a team?",
+    "options": [
+      { "text": "Leader", "value": "{\"ability\": \"intimidate\"}" },
+      { "text": "Motivator", "value": "{\"ability\": \"cheer-up\"}" },
+      { "text": "Strategist", "value": "{\"stat\": \"special-defense\"}" },
+      { "text": "Support", "value": "{\"ability\": \"friend-guard\"}" }
+    ]
+  },
+  {
+    "identifier": "risk_tendency",
+    "text": "How do you feel about risk?",
+    "options": [
+      { "text": "Love it", "value": "{\"type\": \"fire\"}" },
+      { "text": "Avoid it", "value": "{\"type\": \"rock\"}" },
+      { "text": "Depends", "value": "{\"type\": \"normal\"}" },
+      { "text": "Act on impulse", "value": "{\"type\": \"electric\"}" }
+    ]
+  },
+  {
+    "identifier": "dominant_emotion",
+    "text": "What do you feel most often?",
+    "options": [
+      { "text": "Joy", "value": "{\"color\": \"yellow\"}" },
+      { "text": "Sadness", "value": "{\"color\": \"blue\"}" },
+      { "text": "Anger", "value": "{\"type\": \"fire\"}" },
+      { "text": "Calmness", "value": "{\"type\": \"grass\"}" }
+    ]
+  },
+  {
+    "identifier": "place_you_belong",
+    "text": "Where do you feel most at home?",
+    "options": [
+      { "text": "In the forest", "value": "{\"habitat\": \"forest\"}" },
+      { "text": "Near the ocean", "value": "{\"habitat\": \"sea\"}" },
+      { "text": "In the mountains", "value": "{\"habitat\": \"mountain\"}" },
+      { "text": "In the city", "value": "{\"habitat\": \"urban\"}" }
+    ]
+  }
+]
