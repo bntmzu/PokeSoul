@@ -1,12 +1,14 @@
 # 🌟 PokeSoul
 
-A Django-based Pokemon personality matching system that helps users discover their soul Pokemon through an intelligent questionnaire.
+Find the Pokémon that truly reflects your inner world — one question at a time.
+
+This project started as a way to practice Django and working with APIs, but somewhere along the way, I got really into it. I wanted it to feel fun, flexible, and easy to grow, so I built the architecture with future ideas in mind. And some of those ideas are already on the way: a deeper and more personal questionnaire, real Pokémon voice playback, and a cozy little habitat visualization to show where your Pokémon truly belongs! :)
 
 ## 👨‍💻 **For Reviewers - Quick Start**
 
 **Want to test the project? Just run:**
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/bntmzu/PokeSoul.git
 cd PokeSoul
 ./docker.sh up
 ```
@@ -40,7 +42,7 @@ cd PokeSoul
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/bntmzu/PokeSoul.git
    cd PokeSoul
    ```
 
@@ -373,44 +375,11 @@ export DB_PASSWORD="your-secure-db-password"
 - **Subsequent Runs**: Fast startup with cached data
 - **Resource Usage**: Standard Docker container requirements
 
-## 🎯 What to Look For
 
-### ✅ **Code Quality**
-- Clean, readable code
-- Proper error handling
-- Comprehensive tests
-- Good documentation
-
-### ✅ **Architecture**
-- Well-structured Django apps
-- Separation of concerns
-- Efficient database design
-- Caching implementation
-
-### ✅ **User Experience**
-- Responsive design
-- Smooth quiz flow
-- Beautiful UI
-- Fast performance
-
-### ✅ **DevOps**
-- Docker containerization
-- Health checks
-- Production readiness
-- Easy deployment
-
-## 🚀 Production Readiness
-
-The project includes:
-- ✅ Production Docker configuration
-- ✅ Health checks
-- ✅ Resource limits
-- ✅ Security best practices
-- ✅ Comprehensive documentation
 
 ## 🤝 Contributing
 
-1. Fork the repository
+1. Fork the [repository](https://github.com/bntmzu/PokeSoul.git)
 2. Create a feature branch
 3. Make your changes
 4. Add tests for new functionality
