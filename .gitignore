@@ -79,3 +79,9 @@ tmp/
 uploads/
 temp/
 *.swp
+
+# Static analysis and tooling
+bandit-report.json
+.ruff_cache/
+.cache/
+pip-log.txt
