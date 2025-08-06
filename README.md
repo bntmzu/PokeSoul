@@ -4,6 +4,8 @@ Find the Pokémon that truly reflects your inner world — one question at a tim
 
 This project started as a way to practice Django and working with APIs, but somewhere along the way, I got really into it. I wanted it to feel fun, flexible, and easy to grow, so I built the architecture with future ideas in mind. And some of those ideas are already on the way: a deeper and more personal questionnaire, real Pokémon voice playback, and a cozy little habitat visualization to show where your Pokémon truly belongs! :)
 
+![Pikachu says hi!](https://media1.tenor.com/m/pZDyNgqBY80AAAAC/hi-pikachu.gif)
+
 ## 👨‍💻 **For Reviewers - Quick Start**
 
 **Want to test the project? Just run:**
