@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}PokeSoul - Find Your Soul Pokemon{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold mb-4">🌟 Find Your Soul Pokemon</h1>
+        <p class="lead mb-5">Discover which Pokemon matches your personality through our unique personality quiz!</p>
+        <a href="{% url 'take_quiz' %}" class="btn btn-primary btn-lg">
+            🎯 Take the Quiz Now
+        </a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-6 mb-3">How It Works</h2>
+                <p class="lead text-muted">Our advanced algorithm analyzes your personality traits to find the perfect Pokemon match</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <span style="font-size: 3rem;">📝</span>
+                        </div>
+                        <h5 class="card-title">Take the Quiz</h5>
+                        <p class="card-text">Answer a series of personality questions designed to understand your unique traits and preferences.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <span style="font-size: 3rem;">🧠</span>
+                        </div>
+                        <h5 class="card-title">AI Analysis</h5>
+                        <p class="card-text">Our intelligent matching system analyzes your answers to find the perfect Pokemon companion.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <span style="font-size: 3rem;">🎉</span>
+                        </div>
+                        <h5 class="card-title">Meet Your Pokemon</h5>
+                        <p class="card-text">Discover your soul Pokemon with detailed characteristics and personality insights.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="display-6 mb-4">About PokeSoul</h2>
+                <p class="lead mb-4">
+                    PokeSoul is a unique personality matching system that connects you with the Pokemon that best reflects your inner self.
+                </p>
+                <p class="mb-4">
+                    Our advanced algorithm considers multiple factors including:
+                </p>
+                <ul class="list-unstyled">
+                    <li class="mb-2">🌟 <strong>Elemental preferences</strong> - Fire, Water, Grass, and more</li>
+                    <li class="mb-2">🎨 <strong>Color associations</strong> - Your favorite colors and their meanings</li>
+                    <li class="mb-2">🏔️ <strong>Habitat preferences</strong> - Where you feel most at home</li>
+                    <li class="mb-2">⚡ <strong>Personality traits</strong> - Your unique characteristics and behaviors</li>
+                </ul>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="p-4">
+                    <span style="font-size: 8rem;">🔥💧🌱⚡</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Coming Soon Section -->
+<section class="py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-6 mb-3">🚀 Coming Soon</h2>
+                <p class="lead text-muted">Exciting new features are on the horizon to make your Pokemon experience even more immersive!</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card feature-card h-100 border-warning">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <span style="font-size: 3rem;">🧩</span>
+                        </div>
+                        <h5 class="card-title">Enhanced Questionnaire</h5>
+                        <p class="card-text">More detailed and personalized questions for even more accurate Pokemon matching. Discover deeper aspects of your personality!</p>
+                        <span class="badge bg-warning text-dark">In Development</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card feature-card h-100 border-warning">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <span style="font-size: 3rem;">🔊</span>
+                        </div>
+                        <h5 class="card-title">Pokemon Voice</h5>
+                        <p class="card-text">Hear your Pokemon's unique cry and voice! Experience the authentic sounds that make each Pokemon special.</p>
+                        <span class="badge bg-warning text-dark">Coming Soon</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card feature-card h-100 border-warning">
+                    <div class="card-body text-center">
+                        <div class="mb-3">
+                            <span style="font-size: 3rem;">🗺️</span>
+                        </div>
+                        <h5 class="card-title">Habitat Visualization</h5>
+                        <p class="card-text">Explore your Pokemon's natural habitat with beautiful 3D environments and interactive maps. See where your Pokemon truly belongs!</p>
+                        <span class="badge bg-warning text-dark">Planned</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <p class="text-muted">
+                    <small>💡 Have ideas for new features? We'd love to hear from you!</small>
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="display-6 mb-4">Ready to Find Your Soul Pokemon?</h2>
+        <p class="lead mb-4">Take our personality quiz and discover which Pokemon matches your unique personality!</p>
+        <a href="{% url 'take_quiz' %}" class="btn btn-primary btn-lg">
+            🚀 Start Your Journey
+        </a>
+    </div>
+</section>
+{% endblock %}
