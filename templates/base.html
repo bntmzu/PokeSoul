@@ -2,32 +2,79 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}PokeSoul{% endblock %}</title>
 
     <!-- Bootstrap CSS CDN  -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #4ade80 0%, #fbbf24 100%);
+            color: white;
+            padding: 80px 0;
+        }
+        .feature-card {
+            transition: transform 0.3s ease;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #4ade80 0%, #fbbf24 100%);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #22c55e 0%, #f59e0b 100%);
+            transform: translateY(-2px);
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+    </style>
 
     {% block head_extra %}{% endblock %}
 </head>
 <body>
 
 <!-- Navigation bar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
     <div class="container">
-        <a class="navbar-brand" href="/">PokeSoul</a>
+        <a class="navbar-brand" href="/">🌟 PokeSoul</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/quiz/">Take Quiz</a>
+                </li>
+            </ul>
+        </div>
     </div>
 </nav>
 
 <!--  Main container -->
-<main class="container mt-4">
+<main>
     {% block content %}
     <!-- Main content  -->
     {% endblock %}
 </main>
 
 <!-- Footer -->
-<footer class="text-center mt-5 mb-3 text-muted">
-    <small>&copy; 2025 PokeSoul Project</small>
+<footer class="bg-light text-center py-4 mt-5">
+    <div class="container">
+        <small class="text-muted">&copy; 2025 PokeSoul Project - Find Your Soul Pokemon</small>
+    </div>
 </footer>
 
 <!-- Bootstrap JS  -->
