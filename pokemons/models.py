@@ -1,6 +1,7 @@
-from django.db import models
-from django.contrib.postgres.fields import ArrayField
 import uuid
+
+from django.contrib.postgres.fields import ArrayField
+from django.db import models
 
 
 class Pokemon(models.Model):
@@ -20,7 +21,23 @@ class Pokemon(models.Model):
     special_defense = models.IntegerField()
     speed = models.IntegerField()
 
+    image_url = models.URLField(null=True, blank=True)
+    cries_url = models.URLField(null=True, blank=True)
+    popularity_score = models.IntegerField(default=0)
+
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "Pokemon"
+        verbose_name_plural = "Pokemons"
+        indexes = [
+            models.Index(fields=["name"]),
+            models.Index(fields=["types"]),
+            models.Index(fields=["color"]),
+            models.Index(fields=["habitat"]),
+        ]
 
     def __str__(self):
         return self.name.capitalize()
