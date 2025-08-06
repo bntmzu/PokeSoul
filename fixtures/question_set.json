@@ -1,162 +1,706 @@
 [
   {
-    "identifier": "time_of_day",
-    "text": "What time of day do you prefer?",
-    "options": [
-      { "text": "Morning", "value": "{\"type\": \"grass\", \"color\": \"green\"}" },
-      { "text": "Afternoon", "value": "{\"type\": \"fire\", \"color\": \"red\"}" },
-      { "text": "Evening", "value": "{\"type\": \"electric\", \"color\": \"yellow\"}" },
-      { "text": "Night", "value": "{\"type\": \"dark\", \"color\": \"black\"}" }
-    ]
+    "model": "core.question",
+    "pk": 1,
+    "fields": {
+      "identifier": "time_of_day",
+      "text": "What time of day do you prefer?"
+    }
   },
   {
-    "identifier": "element_resonance",
-    "text": "Which element resonates with you the most?",
-    "options": [
-      { "text": "Fire", "value": "{\"type\": \"fire\"}" },
-      { "text": "Water", "value": "{\"type\": \"water\"}" },
-      { "text": "Air", "value": "{\"type\": \"flying\"}" },
-      { "text": "Earth", "value": "{\"type\": \"ground\"}" }
-    ]
+    "model": "core.answeroption",
+    "pk": 1,
+    "fields": {
+      "question": 1,
+      "text": "Morning",
+      "value": "{\"type\": \"grass\", \"color\": \"green\"}"
+    }
   },
   {
-    "identifier": "conflict_handling",
-    "text": "How do you usually handle conflict?",
-    "options": [
-      { "text": "I fight", "value": "{\"stat\": \"attack\"}" },
-      { "text": "I flee", "value": "{\"type\": \"ghost\"}" },
-      { "text": "I analyze", "value": "{\"stat\": \"special-attack\"}" },
-      { "text": "I calm things down", "value": "{\"ability\": \"serene-grace\"}" }
-    ]
+    "model": "core.answeroption",
+    "pk": 2,
+    "fields": {
+      "question": 1,
+      "text": "Afternoon",
+      "value": "{\"type\": \"fire\", \"color\": \"red\"}"
+    }
   },
   {
-    "identifier": "journey_goal",
-    "text": "What do you seek in a journey?",
-    "options": [
-      { "text": "Adventure", "value": "{\"type\": \"fighting\"}" },
-      { "text": "Answers", "value": "{\"type\": \"psychic\"}" },
-      { "text": "Safety", "value": "{\"type\": \"steel\"}" },
-      { "text": "Friends", "value": "{\"ability\": \"friend-guard\"}" }
-    ]
+    "model": "core.answeroption",
+    "pk": 3,
+    "fields": {
+      "question": 1,
+      "text": "Evening",
+      "value": "{\"type\": \"electric\", \"color\": \"yellow\"}"
+    }
   },
   {
-    "identifier": "favorite_color",
-    "text": "Which color do you identify with most?",
-    "options": [
-      { "text": "Blue", "value": "{\"color\": \"blue\"}" },
-      { "text": "Red", "value": "{\"color\": \"red\"}" },
-      { "text": "Black", "value": "{\"color\": \"black\"}" },
-      { "text": "White", "value": "{\"color\": \"white\"}" }
-    ]
+    "model": "core.answeroption",
+    "pk": 4,
+    "fields": {
+      "question": 1,
+      "text": "Night",
+      "value": "{\"type\": \"dark\", \"color\": \"black\"}"
+    }
   },
   {
-    "identifier": "shape_preference",
-    "text": "Which shape or form appeals to you most?",
-    "options": [
-      { "text": "Winged", "value": "{\"shape\": \"wings\"}" },
-      { "text": "Furry", "value": "{\"shape\": \"quadruped\"}" },
-      { "text": "Spiky", "value": "{\"shape\": \"armor\"}" },
-      { "text": "Amorphous", "value": "{\"shape\": \"blob\"}" }
-    ]
+    "model": "core.question",
+    "pk": 2,
+    "fields": {
+      "identifier": "element_resonance",
+      "text": "Which element resonates with you the most?"
+    }
   },
   {
-    "identifier": "current_feeling",
-    "text": "How do you feel right now?",
-    "options": [
-      { "text": "Strong", "value": "{\"stat\": \"defense\"}" },
-      { "text": "Wise", "value": "{\"type\": \"psychic\"}" },
-      { "text": "Invisible", "value": "{\"type\": \"ghost\"}" },
-      { "text": "Radiant", "value": "{\"type\": \"electric\"}" }
-    ]
+    "model": "core.answeroption",
+    "pk": 5,
+    "fields": {
+      "question": 2,
+      "text": "Fire",
+      "value": "{\"type\": \"fire\"}"
+    }
   },
   {
-    "identifier": "weather_preference",
-    "text": "What's your favorite weather?",
-    "options": [
-      { "text": "Rain", "value": "{\"ability\": \"rain-dish\"}" },
-      { "text": "Sun", "value": "{\"ability\": \"solar-power\"}" },
-      { "text": "Snow", "value": "{\"ability\": \"ice-body\"}" },
-      { "text": "Fog", "value": "{\"type\": \"fairy\"}" }
-    ]
+    "model": "core.answeroption",
+    "pk": 6,
+    "fields": {
+      "question": 2,
+      "text": "Water",
+      "value": "{\"type\": \"water\"}"
+    }
   },
   {
-    "identifier": "social_orientation",
-    "text": "Are you more introverted or extroverted?",
-    "options": [
-      { "text": "Introverted", "value": "{\"type\": \"ghost\"}" },
-      { "text": "Extroverted", "value": "{\"type\": \"normal\"}" },
-      { "text": "Depends", "value": "{\"type\": \"normal\"}" },
-      { "text": "Chaotic", "value": "{\"type\": \"dragon\"}" }
-    ]
+    "model": "core.answeroption",
+    "pk": 7,
+    "fields": {
+      "question": 2,
+      "text": "Air",
+      "value": "{\"type\": \"flying\"}"
+    }
   },
   {
-    "identifier": "superpower_choice",
-    "text": "Which superpower would you choose?",
-    "options": [
-      { "text": "Healing", "value": "{\"ability\": \"natural-cure\"}" },
-      { "text": "Speed", "value": "{\"stat\": \"speed\"}" },
-      { "text": "Magic", "value": "{\"type\": \"fairy\"}" },
-      { "text": "Strength", "value": "{\"stat\": \"attack\"}" }
-    ]
+    "model": "core.answeroption",
+    "pk": 8,
+    "fields": {
+      "question": 2,
+      "text": "Earth",
+      "value": "{\"type\": \"ground\"}"
+    }
   },
   {
-    "identifier": "problem_solving",
-    "text": "How do you usually solve problems?",
-    "options": [
-      { "text": "Logic", "value": "{\"stat\": \"special-attack\"}" },
-      { "text": "Intuition", "value": "{\"type\": \"psychic\"}" },
-      { "text": "Feelings", "value": "{\"type\": \"fairy\"}" },
-      { "text": "Chance", "value": "{\"type\": \"dark\"}" }
-    ]
+    "model": "core.question",
+    "pk": 3,
+    "fields": {
+      "identifier": "conflict_handling",
+      "text": "How do you usually handle conflict?"
+    }
   },
   {
-    "identifier": "core_value",
-    "text": "What matters to you most?",
-    "options": [
-      { "text": "Freedom", "value": "{\"type\": \"flying\"}" },
-      { "text": "Power", "value": "{\"stat\": \"attack\"}" },
-      { "text": "Peace", "value": "{\"color\": \"blue\"}" },
-      { "text": "Faith", "value": "{\"type\": \"fairy\"}" }
-    ]
+    "model": "core.answeroption",
+    "pk": 9,
+    "fields": {
+      "question": 3,
+      "text": "I fight",
+      "value": "{\"stat\": \"attack\"}"
+    }
   },
   {
-    "identifier": "team_role",
-    "text": "What role do you take in a team?",
-    "options": [
-      { "text": "Leader", "value": "{\"ability\": \"intimidate\"}" },
-      { "text": "Motivator", "value": "{\"ability\": \"cheer-up\"}" },
-      { "text": "Strategist", "value": "{\"stat\": \"special-defense\"}" },
-      { "text": "Support", "value": "{\"ability\": \"friend-guard\"}" }
-    ]
+    "model": "core.answeroption",
+    "pk": 10,
+    "fields": {
+      "question": 3,
+      "text": "I flee",
+      "value": "{\"type\": \"ghost\"}"
+    }
   },
   {
-    "identifier": "risk_tendency",
-    "text": "How do you feel about risk?",
-    "options": [
-      { "text": "Love it", "value": "{\"type\": \"fire\"}" },
-      { "text": "Avoid it", "value": "{\"type\": \"rock\"}" },
-      { "text": "Depends", "value": "{\"type\": \"normal\"}" },
-      { "text": "Act on impulse", "value": "{\"type\": \"electric\"}" }
-    ]
+    "model": "core.answeroption",
+    "pk": 11,
+    "fields": {
+      "question": 3,
+      "text": "I analyze",
+      "value": "{\"stat\": \"special-attack\"}"
+    }
   },
   {
-    "identifier": "dominant_emotion",
-    "text": "What do you feel most often?",
-    "options": [
-      { "text": "Joy", "value": "{\"color\": \"yellow\"}" },
-      { "text": "Sadness", "value": "{\"color\": \"blue\"}" },
-      { "text": "Anger", "value": "{\"type\": \"fire\"}" },
-      { "text": "Calmness", "value": "{\"type\": \"grass\"}" }
-    ]
+    "model": "core.answeroption",
+    "pk": 12,
+    "fields": {
+      "question": 3,
+      "text": "I calm things down",
+      "value": "{\"ability\": \"serene-grace\"}"
+    }
   },
   {
-    "identifier": "place_you_belong",
-    "text": "Where do you feel most at home?",
-    "options": [
-      { "text": "In the forest", "value": "{\"habitat\": \"forest\"}" },
-      { "text": "Near the ocean", "value": "{\"habitat\": \"sea\"}" },
-      { "text": "In the mountains", "value": "{\"habitat\": \"mountain\"}" },
-      { "text": "In the city", "value": "{\"habitat\": \"urban\"}" }
-    ]
+    "model": "core.question",
+    "pk": 4,
+    "fields": {
+      "identifier": "journey_goal",
+      "text": "What do you seek in a journey?"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 13,
+    "fields": {
+      "question": 4,
+      "text": "Adventure",
+      "value": "{\"type\": \"fighting\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 14,
+    "fields": {
+      "question": 4,
+      "text": "Answers",
+      "value": "{\"type\": \"psychic\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 15,
+    "fields": {
+      "question": 4,
+      "text": "Safety",
+      "value": "{\"type\": \"steel\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 16,
+    "fields": {
+      "question": 4,
+      "text": "Friends",
+      "value": "{\"ability\": \"friend-guard\"}"
+    }
+  },
+  {
+    "model": "core.question",
+    "pk": 5,
+    "fields": {
+      "identifier": "favorite_color",
+      "text": "Which color do you identify with most?"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 17,
+    "fields": {
+      "question": 5,
+      "text": "Blue",
+      "value": "{\"color\": \"blue\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 18,
+    "fields": {
+      "question": 5,
+      "text": "Red",
+      "value": "{\"color\": \"red\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 19,
+    "fields": {
+      "question": 5,
+      "text": "Black",
+      "value": "{\"color\": \"black\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 20,
+    "fields": {
+      "question": 5,
+      "text": "White",
+      "value": "{\"color\": \"white\"}"
+    }
+  },
+  {
+    "model": "core.question",
+    "pk": 6,
+    "fields": {
+      "identifier": "shape_preference",
+      "text": "Which shape or form appeals to you most?"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 21,
+    "fields": {
+      "question": 6,
+      "text": "Winged",
+      "value": "{\"shape\": \"wings\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 22,
+    "fields": {
+      "question": 6,
+      "text": "Furry",
+      "value": "{\"shape\": \"quadruped\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 23,
+    "fields": {
+      "question": 6,
+      "text": "Spiky",
+      "value": "{\"shape\": \"armor\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 24,
+    "fields": {
+      "question": 6,
+      "text": "Amorphous",
+      "value": "{\"shape\": \"blob\"}"
+    }
+  },
+  {
+    "model": "core.question",
+    "pk": 7,
+    "fields": {
+      "identifier": "current_feeling",
+      "text": "How do you feel right now?"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 25,
+    "fields": {
+      "question": 7,
+      "text": "Strong",
+      "value": "{\"stat\": \"defense\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 26,
+    "fields": {
+      "question": 7,
+      "text": "Wise",
+      "value": "{\"type\": \"psychic\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 27,
+    "fields": {
+      "question": 7,
+      "text": "Invisible",
+      "value": "{\"type\": \"ghost\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 28,
+    "fields": {
+      "question": 7,
+      "text": "Radiant",
+      "value": "{\"type\": \"electric\"}"
+    }
+  },
+  {
+    "model": "core.question",
+    "pk": 8,
+    "fields": {
+      "identifier": "weather_preference",
+      "text": "What's your favorite weather?"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 29,
+    "fields": {
+      "question": 8,
+      "text": "Rain",
+      "value": "{\"ability\": \"rain-dish\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 30,
+    "fields": {
+      "question": 8,
+      "text": "Sun",
+      "value": "{\"ability\": \"solar-power\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 31,
+    "fields": {
+      "question": 8,
+      "text": "Snow",
+      "value": "{\"ability\": \"ice-body\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 32,
+    "fields": {
+      "question": 8,
+      "text": "Fog",
+      "value": "{\"type\": \"fairy\"}"
+    }
+  },
+  {
+    "model": "core.question",
+    "pk": 9,
+    "fields": {
+      "identifier": "social_orientation",
+      "text": "Are you more introverted or extroverted?"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 33,
+    "fields": {
+      "question": 9,
+      "text": "Introverted",
+      "value": "{\"type\": \"ghost\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 34,
+    "fields": {
+      "question": 9,
+      "text": "Extroverted",
+      "value": "{\"type\": \"normal\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 35,
+    "fields": {
+      "question": 9,
+      "text": "Depends",
+      "value": "{\"type\": \"normal\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 36,
+    "fields": {
+      "question": 9,
+      "text": "Chaotic",
+      "value": "{\"type\": \"dragon\"}"
+    }
+  },
+  {
+    "model": "core.question",
+    "pk": 10,
+    "fields": {
+      "identifier": "superpower_choice",
+      "text": "Which superpower would you choose?"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 37,
+    "fields": {
+      "question": 10,
+      "text": "Healing",
+      "value": "{\"ability\": \"natural-cure\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 38,
+    "fields": {
+      "question": 10,
+      "text": "Speed",
+      "value": "{\"stat\": \"speed\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 39,
+    "fields": {
+      "question": 10,
+      "text": "Magic",
+      "value": "{\"type\": \"fairy\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 40,
+    "fields": {
+      "question": 10,
+      "text": "Strength",
+      "value": "{\"stat\": \"attack\"}"
+    }
+  },
+  {
+    "model": "core.question",
+    "pk": 11,
+    "fields": {
+      "identifier": "environment_choice",
+      "text": "Where would you feel most at home?"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 41,
+    "fields": {
+      "question": 11,
+      "text": "Forest",
+      "value": "{\"habitat\": \"forest\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 42,
+    "fields": {
+      "question": 11,
+      "text": "Ocean",
+      "value": "{\"habitat\": \"waters-edge\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 43,
+    "fields": {
+      "question": 11,
+      "text": "Mountains",
+      "value": "{\"habitat\": \"mountain\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 44,
+    "fields": {
+      "question": 11,
+      "text": "City",
+      "value": "{\"habitat\": \"urban\"}"
+    }
+  },
+  {
+    "model": "core.question",
+    "pk": 12,
+    "fields": {
+      "identifier": "learning_style",
+      "text": "How do you prefer to learn new things?"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 45,
+    "fields": {
+      "question": 12,
+      "text": "By doing",
+      "value": "{\"stat\": \"attack\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 46,
+    "fields": {
+      "question": 12,
+      "text": "By observing",
+      "value": "{\"stat\": \"special-attack\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 47,
+    "fields": {
+      "question": 12,
+      "text": "By experimenting",
+      "value": "{\"type\": \"poison\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 48,
+    "fields": {
+      "question": 12,
+      "text": "By intuition",
+      "value": "{\"type\": \"psychic\"}"
+    }
+  },
+  {
+    "model": "core.question",
+    "pk": 13,
+    "fields": {
+      "identifier": "stress_response",
+      "text": "How do you typically respond to stress?"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 49,
+    "fields": {
+      "question": 13,
+      "text": "I get defensive",
+      "value": "{\"stat\": \"defense\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 50,
+    "fields": {
+      "question": 13,
+      "text": "I withdraw",
+      "value": "{\"type\": \"ghost\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 51,
+    "fields": {
+      "question": 13,
+      "text": "I seek help",
+      "value": "{\"type\": \"normal\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 52,
+    "fields": {
+      "question": 13,
+      "text": "I adapt quickly",
+      "value": "{\"type\": \"normal\"}"
+    }
+  },
+  {
+    "model": "core.question",
+    "pk": 14,
+    "fields": {
+      "identifier": "dream_quality",
+      "text": "What are your dreams usually like?"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 53,
+    "fields": {
+      "question": 14,
+      "text": "Vivid and colorful",
+      "value": "{\"type\": \"psychic\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 54,
+    "fields": {
+      "question": 14,
+      "text": "Dark and mysterious",
+      "value": "{\"type\": \"dark\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 55,
+    "fields": {
+      "question": 14,
+      "text": "Action-packed",
+      "value": "{\"type\": \"fighting\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 56,
+    "fields": {
+      "question": 14,
+      "text": "Peaceful",
+      "value": "{\"type\": \"fairy\"}"
+    }
+  },
+  {
+    "model": "core.question",
+    "pk": 15,
+    "fields": {
+      "identifier": "communication_style",
+      "text": "How do you prefer to communicate?"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 57,
+    "fields": {
+      "question": 15,
+      "text": "Direct and clear",
+      "value": "{\"type\": \"normal\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 58,
+    "fields": {
+      "question": 15,
+      "text": "Through actions",
+      "value": "{\"type\": \"fighting\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 59,
+    "fields": {
+      "question": 15,
+      "text": "With emotion",
+      "value": "{\"type\": \"fairy\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 60,
+    "fields": {
+      "question": 15,
+      "text": "Through silence",
+      "value": "{\"type\": \"ghost\"}"
+    }
+  },
+  {
+    "model": "core.question",
+    "pk": 16,
+    "fields": {
+      "identifier": "life_approach",
+      "text": "What's your general approach to life?"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 61,
+    "fields": {
+      "question": 16,
+      "text": "Go with the flow",
+      "value": "{\"type\": \"water\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 62,
+    "fields": {
+      "question": 16,
+      "text": "Plan everything",
+      "value": "{\"type\": \"psychic\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 63,
+    "fields": {
+      "question": 16,
+      "text": "Take risks",
+      "value": "{\"type\": \"fire\"}"
+    }
+  },
+  {
+    "model": "core.answeroption",
+    "pk": 64,
+    "fields": {
+      "question": 16,
+      "text": "Stay grounded",
+      "value": "{\"type\": \"ground\"}"
+    }
   }
 ]

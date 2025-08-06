@@ -1,17 +1,18 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status, viewsets, filters
-from rest_framework.exceptions import ValidationError
-from requests.exceptions import RequestException
-from pokemons.serializers import PokemonDataSerializer, PokemonModelSerializer
-from pokemons.pokeapi import get_full_pokemon_data, PokemonAPIError
-from pokemons.models import Pokemon
-from pokemons.cache import get_pokemon_from_cache, set_pokemon_to_cache
-from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
+from requests.exceptions import RequestException
+from rest_framework import filters, status, viewsets
+from rest_framework.exceptions import ValidationError
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from pokemons.cache import get_pokemon_from_cache, set_pokemon_to_cache
+from pokemons.models import Pokemon
+from pokemons.pokeapi import PokemonAPIError, get_full_pokemon_data
+from pokemons.serializers import PokemonDataSerializer, PokemonModelSerializer
 
 
-class PokemonMatchView(APIView):
+class PokemonSearchView(APIView):
 
     @swagger_auto_schema(
         operation_summary="Match a Pokémon by name",
@@ -27,7 +28,7 @@ class PokemonMatchView(APIView):
         ),
         responses={
             200: openapi.Response(
-                "Pokémon matched successfully", PokemonDataSerializer
+                "Pokémon matched successfully", PokemonModelSerializer
             ),
             400: "Missing 'name'",
             422: "Invalid or malformed PokeAPI data",
@@ -40,59 +41,80 @@ class PokemonMatchView(APIView):
             return Response(
                 {"error": "Missing 'name'"}, status=status.HTTP_400_BAD_REQUEST
             )
-        # Step 1: Try Redis
-        cached_data = get_pokemon_from_cache(name)
-        if cached_data:
-            return Response(cached_data, status=status.HTTP_200_OK)
 
-        # Step 2: Try database
         try:
-            pokemon = Pokemon.objects.get(name__iexact=name)
-            model_data = PokemonModelSerializer(pokemon).data
-            set_pokemon_to_cache(name, model_data)  # cache it
-            return Response(model_data, status=status.HTTP_200_OK)
-        except Pokemon.DoesNotExist:
-            pass
+            # 1. Redis cache
+            cached = get_pokemon_from_cache(name)
+            if cached:
+                return Response(cached)
 
-        # Step 3: Fallback to PokeAPI
-        try:
-            raw_data = get_full_pokemon_data(name)
-        except PokemonAPIError as e:
-            return Response({"error": str(e)}, status=status.HTTP_502_BAD_GATEWAY)
-        except (KeyError, TypeError, ValueError, RequestException):
-            return Response(
-                {"error": "Malformed response from PokeAPI"},
-                status=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            )
+            # 2. Database
+            db_result = self.get_pokemon_from_db(name)
+            if db_result:
+                return Response(db_result)
 
-        # Step 4: Validate external API response
-        try:
+            # 3. External PokeAPI
+            raw_data = self.fetch_from_pokeapi(name)
+
+            # 4. Validate external data
             data_serializer = PokemonDataSerializer(data=raw_data)
             data_serializer.is_valid(raise_exception=True)
+
+            # 5. Save to DB and return
+            pokemon = self.save_pokemon_if_new(raw_data)
+            model_serializer = PokemonModelSerializer(pokemon)
+
+            # 6. Cache and return
+            set_pokemon_to_cache(name, model_serializer.data)
+            return Response(model_serializer.data, status=status.HTTP_200_OK)
+
         except ValidationError:
             return Response(
                 {"error": "Invalid data from PokeAPI"},
                 status=status.HTTP_422_UNPROCESSABLE_ENTITY,
             )
+        except PokemonAPIError as e:
+            return Response({"error": str(e)}, status=status.HTTP_502_BAD_GATEWAY)
+        except Exception as e:
+            return Response(
+                {"error": "Unexpected server error", "details": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )
 
-        # Step 5: Save to DB if not already there
-        model_data = {**raw_data, **raw_data["base_stats"]}
-        if not Pokemon.objects.filter(name__iexact=raw_data["name"]).exists():
-            model_serializer = PokemonModelSerializer(data=model_data)
-            if model_serializer.is_valid():
-                model_serializer.save()
-            else:
-                return Response(
-                    {
-                        "error": "Failed to save to DB",
-                        "details": model_serializer.errors,
-                    },
-                    status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                )
+    def get_pokemon_from_db(self, name):
+        try:
+            pokemon = Pokemon.objects.get(name__iexact=name)
+            serializer = PokemonModelSerializer(pokemon)
+            set_pokemon_to_cache(name, serializer.data)
+            return serializer.data
+        except Pokemon.DoesNotExist:
+            return None
 
-        #  Step 6: Cache and return
-        set_pokemon_to_cache(name, data_serializer.data)
-        return Response(data_serializer.data, status=status.HTTP_200_OK)
+    def fetch_from_pokeapi(self, name):
+        try:
+            return get_full_pokemon_data(name)
+        except (KeyError, TypeError, ValueError, RequestException):
+            raise ValidationError("Malformed response from PokeAPI")
+
+    def save_pokemon_if_new(self, raw_data):
+        pokemon, created = Pokemon.objects.get_or_create(
+            name__iexact=raw_data["name"],
+            defaults={
+                "name": raw_data["name"],
+                "types": raw_data["types"],
+                "color": raw_data["color"],
+                "habitat": raw_data["habitat"],
+                "abilities": raw_data["abilities"],
+                "flavor_text": raw_data["flavor_text"],
+                "hp": raw_data["base_stats"]["hp"],
+                "attack": raw_data["base_stats"]["attack"],
+                "defense": raw_data["base_stats"]["defense"],
+                "special_attack": raw_data["base_stats"]["special_attack"],
+                "special_defense": raw_data["base_stats"]["special_defense"],
+                "speed": raw_data["base_stats"]["speed"],
+            },
+        )
+        return pokemon
 
 
 class PokemonViewSet(viewsets.ModelViewSet):
@@ -130,4 +152,18 @@ class PokemonViewSet(viewsets.ModelViewSet):
         },
     )
     def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
+        serializer = self.get_serializer(data=request.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        except ValidationError as e:
+            return Response(
+                {"error": "Invalid input data", "details": e.detail},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        except Exception as e:
+            return Response(
+                {"error": "Unexpected server error", "details": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            )

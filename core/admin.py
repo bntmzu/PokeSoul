@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Question, AnswerOption, UserProfile
+
+from .models import AnswerOption, Question, UserProfile
 
 
 @admin.register(Question)

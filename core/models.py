@@ -5,6 +5,14 @@ class Question(models.Model):
     identifier = models.CharField(max_length=64, unique=True)  # e.g., "favorite_color"
     text = models.CharField(max_length=255)  # e.g., "What is your favorite color?"
 
+    class Meta:
+        ordering = ["identifier"]
+        verbose_name = "Question"
+        verbose_name_plural = "Questions"
+        indexes = [
+            models.Index(fields=["identifier"]),
+        ]
+
     def __str__(self):
         return self.text
 
@@ -14,7 +22,7 @@ class AnswerOption(models.Model):
         Question, related_name="options", on_delete=models.CASCADE
     )
     text = models.CharField(max_length=255)
-    value = models.CharField(max_length=64)  # e.g., "red", "blue", "calm"
+    value = models.CharField(max_length=64)
 
     def __str__(self):
         return f"{self.question.identifier}: {self.text}"

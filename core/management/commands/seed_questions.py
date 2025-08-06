@@ -1,15 +1,17 @@
 import json
-from django.core.management.base import BaseCommand
-from django.conf import settings
 from pathlib import Path
-from core.models import Question, AnswerOption
+
+from django.conf import settings
+from django.core.management.base import BaseCommand
+
+from core.models import AnswerOption, Question
 
 
 class Command(BaseCommand):
     help = "Seeds the database with questions and answer options."
 
     def handle(self, *args, **kwargs):
-        json_path = Path(settings.BASE_DIR) / "data" / "question_set.json"
+        json_path = Path(settings.BASE_DIR) / "fixtures" / "question_set.json"
 
         if not json_path.exists():
             self.stdout.write(self.style.ERROR(f"File not found: {json_path}"))

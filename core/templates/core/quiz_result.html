@@ -3,19 +3,184 @@
 {% block title %}Your Pokémon Match{% endblock %}
 
 {% block content %}
-<div class="container mt-5 text-center">
-  <h2 class="mb-4">Your Soul Pokémon is...</h2>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="text-center mb-5">
+                <h1 class="display-4 mb-3">🌟 Your Soul Pokemon is...</h1>
+                <h2 class="display-5 text-primary mb-4">{{ pokemon.name|capfirst }}</h2>
+            </div>
 
-  <h1 class="display-4 text-primary mb-3">{{ pokemon.name|capfirst }}</h1>
+            <div class="card shadow-lg">
+                <div class="card-body p-5">
+                    <div class="row">
+                        <div class="col-md-6 text-center">
+                            <div class="pokemon-image-container mb-4">
+                                {% if pokemon.image_url %}
+                                    <img src="{{ pokemon.image_url }}" alt="{{ pokemon.name }}"
+                                         class="img-fluid pokemon-image"
+                                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                                    <div class="pokemon-fallback" style="display: none;">
+                                        <span style="font-size: 6rem;">🎮</span>
+                                        <p class="mt-3 text-muted">{{ pokemon.name|capfirst }}</p>
+                                    </div>
+                                {% else %}
+                                    <div class="pokemon-placeholder">
+                                        <span style="font-size: 6rem;">🎮</span>
+                                        <p class="mt-3 text-muted">{{ pokemon.name|capfirst }}</p>
+                                    </div>
+                                {% endif %}
+                            </div>
 
-  {% if pokemon.sprite_url %}
-    <img src="{{ pokemon.sprite_url }}" alt="{{ pokemon.name }}" class="img-fluid mb-4" style="max-height: 200px;">
-  {% endif %}
+                            <div class="mb-3">
+                                <span class="badge bg-primary me-2">{{ pokemon.types.0|capfirst }}</span>
+                                {% if pokemon.types.1 %}
+                                    <span class="badge bg-secondary">{{ pokemon.types.1|capfirst }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
 
-  <p class="lead">{{ pokemon.flavor_text }}</p>
+                        <div class="col-md-6">
+                            <h3 class="mb-4">Pokemon Characteristics</h3>
 
-  <div class="mt-4">
-    <a href="{% url 'quiz_reset' %}" class="btn btn-outline-primary">Take the Quiz Again</a>
-  </div>
+                            <div class="mb-4">
+                                <h5>🎨 Color</h5>
+                                <p class="text-capitalize">{{ pokemon.color }}</p>
+                            </div>
+
+                            <div class="mb-4">
+                                <h5>🏔️ Habitat</h5>
+                                <p class="text-capitalize">{{ pokemon.habitat }}</p>
+                            </div>
+
+                            <div class="mb-4">
+                                <h5>⚡ Abilities</h5>
+                                <p>{{ pokemon.abilities|join:", "|title }}</p>
+                            </div>
+
+                            <div class="mb-4">
+                                <h5>📖 Description</h5>
+                                <p class="text-muted">{{ pokemon.flavor_text }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="mb-3">Base Stats</h4>
+                            <div class="row">
+                                <div class="col-md-2 col-6 mb-3">
+                                    <div class="text-center">
+                                        <div class="fw-bold text-primary">{{ pokemon.hp }}</div>
+                                        <small class="text-muted">HP</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-6 mb-3">
+                                    <div class="text-center">
+                                        <div class="fw-bold text-danger">{{ pokemon.attack }}</div>
+                                        <small class="text-muted">Attack</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-6 mb-3">
+                                    <div class="text-center">
+                                        <div class="fw-bold text-success">{{ pokemon.defense }}</div>
+                                        <small class="text-muted">Defense</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-6 mb-3">
+                                    <div class="text-center">
+                                        <div class="fw-bold text-warning">{{ pokemon.special_attack }}</div>
+                                        <small class="text-muted">Sp. Atk</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-6 mb-3">
+                                    <div class="text-center">
+                                        <div class="fw-bold text-info">{{ pokemon.special_defense }}</div>
+                                        <small class="text-muted">Sp. Def</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 col-6 mb-3">
+                                    <div class="text-center">
+                                        <div class="fw-bold text-secondary">{{ pokemon.speed }}</div>
+                                        <small class="text-muted">Speed</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <a href="{% url 'quiz_reset' %}" class="btn btn-outline-primary me-3">
+                    🔄 Take Quiz Again
+                </a>
+                <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+                    🏠 Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
 </div>
+
+<style>
+.pokemon-image-container {
+    min-height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 15px;
+    padding: 30px;
+    position: relative;
+}
+
+.pokemon-image {
+    max-width: 100%;
+    max-height: 500px;
+    height: auto;
+    transition: transform 0.3s ease;
+    border-radius: 10px;
+    object-fit: contain;
+}
+
+.pokemon-image:hover {
+    transform: scale(1.05);
+}
+
+.pokemon-fallback {
+    text-align: center;
+    color: #6c757d;
+}
+
+.pokemon-placeholder {
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 15px;
+    color: #6c757d;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .pokemon-image-container {
+        min-height: 300px;
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+
+    .pokemon-image {
+        max-height: 350px;
+    }
+
+    .pokemon-placeholder {
+        min-height: 300px;
+    }
+}
+</style>
 {% endblock %}
