@@ -37,8 +37,8 @@ COPY . .
 # Create non-root user
 RUN adduser --disabled-password --gecos '' appuser
 
-# Set proper permissions
-RUN chown -R appuser:appuser /app
+# Create logs directory and set proper permissions
+RUN mkdir -p /app/logs && chown -R appuser:appuser /app
 
 # Switch to non-root user
 USER appuser

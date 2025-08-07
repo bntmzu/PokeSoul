@@ -93,6 +93,34 @@ python -m pytest
 - **Coverage** (7.10.2): Test coverage
 - **Pre-commit** (4.2.0): Automated code quality checks
 
+## Logging During Tests
+
+### **Test Logging Configuration:**
+- **DEBUG level**: Detailed matching algorithm logs
+- **Performance monitoring**: Request duration tracking
+- **Safe hashing**: Truncated hashes in test logs
+- **Structured output**: JSON and verbose formats
+
+### **View Test Logs:**
+```bash
+# Run tests with detailed logging
+poetry run pytest -v --log-cli-level=DEBUG
+
+# Run tests and save logs to file
+poetry run pytest -v --log-file=test_logs.log --log-file-level=DEBUG
+
+# Run tests in Docker with logging
+docker-compose -f docker/docker-compose.yml exec web python -m pytest -v --log-cli-level=DEBUG
+```
+
+### **Test Log Examples:**
+```
+DEBUG: PerformanceLoggingMiddleware: Starting request GET /quiz/
+INFO: Request GET /quiz/ - Status: 200 - Duration: 0.040s
+DEBUG: Cache hit for hash 871c4905... (truncated)
+DEBUG: Best match found: charizard with score 0.85
+```
+
 ## Configuration Files
 
 - **`.flake8`**: Configures Flake8 linting rules and exclusions

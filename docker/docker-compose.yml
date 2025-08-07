@@ -1,7 +1,5 @@
-version: '3.8'
-
 services:
-  # Django application
+  # Django web application
   web:
     build:
       context: ..
@@ -11,7 +9,11 @@ services:
     environment:
       - DEBUG=True
       - DJANGO_SETTINGS_MODULE=PokeSoul.settings
-      - DATABASE_URL=postgresql://pokesoul:pokesoul@db:5432/pokesoul
+      - NAME=pokesoul
+      - USER=pokesoul
+      - PASSWORD=pokesoul
+      - HOST=db
+      - PORT=5432
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - REDIS_DB=0
@@ -24,6 +26,7 @@ services:
         condition: service_healthy
     volumes:
       - ..:/app
+      - ./logs:/app/logs
     command: >
       sh -c "python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
@@ -35,7 +38,7 @@ services:
       start_period: 40s
     restart: unless-stopped
 
-  # PostgreSQL database
+  # PostgreSQL database for Django
   db:
     image: postgres:15-alpine
     environment:
@@ -53,7 +56,7 @@ services:
       retries: 5
     restart: unless-stopped
 
-  # Redis cache
+  # Redis cache for session storage and API caching
   redis:
     image: redis:7-alpine
     ports:

@@ -1,13 +1,17 @@
+import logging
 from difflib import SequenceMatcher
 from typing import List, Optional, Tuple
-from uuid import UUID
 
+from django.db import transaction
+
+from matcher.cache import cache_match_result, get_answers_hash, get_cached_match
+from matcher.constants import ARCHETYPE_STATS, SCORES
+from matcher.dataclasses import MatchScore
+from matcher.models import MatchResult
+from matcher.preference_extractor import PreferenceExtractor
 from pokemons.models import Pokemon
 
-from .cache import cache_match_result, get_answers_hash, get_cached_match
-from .constants import ARCHETYPE_STATS, SCORES
-from .models import MatchResult
-from .preference_extractor import PreferenceExtractor
+logger = logging.getLogger(__name__)
 
 
 class MatchingEngine:
@@ -18,18 +22,49 @@ class MatchingEngine:
         self.extractor = PreferenceExtractor(user_profile)
         self.match_profile = self.extractor.get_match_profile()
 
-        # Create hash of answers for caching
-        self.answers_hash = get_answers_hash(user_profile.answers)
+        # Create hash for caching
+        self.answers_hash = get_answers_hash(self.user_profile.answers)
+        logger.debug(f"Answers hash: {self.answers_hash[:8]}... (truncated)")
+
+        # Check cache first
+        cached_result = get_cached_match(self.answers_hash)
+        if cached_result:
+            logger.debug(f"Cache hit for hash {self.answers_hash[:8]}...")
+            try:
+                # Convert string UUID back to UUID object for database query
+                pokemon_id = cached_result["pokemon_id"]
+                score = cached_result["score"]
+
+                pokemon = Pokemon.objects.get(id=pokemon_id)
+                logger.debug(
+                    f"Retrieved cached Pokemon: {pokemon.name} (score: {score})"
+                )
+                # Store cached result for later use
+                self.cached_pokemon = pokemon
+                self.cached_score = score
+            except (Pokemon.DoesNotExist, KeyError, ValueError):
+                logger.debug("Cached data invalid, performing fresh matching")
+                pass  # Continue to fresh matching
+
+        logger.debug(
+            f"Cache miss, performing full matching for hash {self.answers_hash[:8]}... (truncated)"
+        )
 
     def find_best_match(self) -> Optional[Tuple[Pokemon, float]]:
         """Finds the best Pokemon from database"""
-        print(f"DEBUG: Finding best match for UserProfile {self.user_profile.id}")
-        print(f"DEBUG: User answers: {self.user_profile.answers}")
-        print(f"DEBUG: Match profile: {self.match_profile}")
+        logger.debug(f"Finding best match for UserProfile {self.user_profile.id}")
+        logger.debug(f"Match profile: {self.match_profile}")
 
-        # Get Pokemon from database, ordered by popularity
-        pokemons = list(Pokemon.objects.all().order_by("-popularity_score"))
-        print(f"DEBUG: Found {len(pokemons)} Pokemon in database")
+        # Return cached result if available
+        if hasattr(self, "cached_pokemon") and hasattr(self, "cached_score"):
+            logger.debug(
+                f"Using cached result: {self.cached_pokemon.name} (score: {self.cached_score})"
+            )
+            return self.cached_pokemon, self.cached_score
+
+        # Get all Pokemon from database
+        pokemons = Pokemon.objects.all()
+        logger.debug(f"Found {pokemons.count()} Pokemon in database")
 
         return self._find_best_among_pokemons(pokemons)
 
@@ -39,18 +74,38 @@ class MatchingEngine:
         """Find best match among Pokemon objects"""
         best_match = None
         best_score = 0.0
-        top_scores = []
+        top_scores: List[MatchScore] = []
 
         for pokemon in pokemons:
             score = self._calculate_match_score(pokemon)
-            top_scores.append((pokemon.name, score))
+            match_score = MatchScore(
+                pokemon_name=pokemon.name,
+                total_score=score,
+                type_score=self._score_types(pokemon.types, self.match_profile.types),
+                color_score=self._score_color(pokemon.color, self.match_profile.color),
+                habitat_score=self._score_habitat(
+                    pokemon.habitat, self.match_profile.habitat
+                ),
+                ability_score=self._score_abilities(
+                    pokemon.abilities, self.match_profile.ability_keywords
+                ),
+                stats_score=self._score_base_stats(
+                    pokemon, self.match_profile.personality_tags
+                ),
+                personality_score=self._score_personality(
+                    pokemon, self.match_profile.personality_tags
+                ),
+            )
+            top_scores.append(match_score)
             if score > best_score:
                 best_score = score
                 best_match = (pokemon, score)
 
         # Show top 5 scores
-        top_scores.sort(key=lambda x: x[1], reverse=True)
-        print(f"DEBUG: Top 5 Pokemon scores: {top_scores[:5]}")
+        top_scores.sort(key=lambda x: x.total_score, reverse=True)
+        logger.debug(
+            f"Top 5 Pokemon scores: {[(s.pokemon_name, s.total_score) for s in top_scores[:5]]}"
+        )
 
         return best_match
 
@@ -65,70 +120,69 @@ class MatchingEngine:
 
     def find_and_save_match(self) -> Optional[MatchResult]:
         """Finds the best Pokemon and saves the result with caching"""
-        print(
-            f"DEBUG: Starting matching process for UserProfile {self.user_profile.id}"
+        logger.debug(
+            f"Starting matching process for UserProfile {self.user_profile.id}"
         )
-        print(f"DEBUG: Match profile: {self.match_profile}")
-        print(f"DEBUG: Answers hash: {self.answers_hash}")
+        logger.debug(f"Match profile: {self.match_profile}")
+        logger.debug(f"Answers hash: {self.answers_hash[:8]}... (truncated)")
 
-        # 1. Check cache first
-        cached_result = get_cached_match(self.answers_hash)
-        if cached_result:
-            try:
-                # Convert string UUID back to UUID object for database query
-                pokemon_id = UUID(cached_result["pokemon_id"])
-                pokemon = Pokemon.objects.get(id=pokemon_id)
-                print(
-                    f"DEBUG: Using cached result: {pokemon.name} (score: {cached_result['score']})"
-                )
-
-                # Create MatchResult from cache
+        # Use cached result if available from __init__
+        if hasattr(self, "cached_pokemon") and hasattr(self, "cached_score"):
+            logger.debug(
+                f"Using cached result: {self.cached_pokemon.name} (score: {self.cached_score})"
+            )
+            with transaction.atomic():
                 match_result = MatchResult.objects.create(
                     user_profile=self.user_profile,
-                    pokemon=pokemon,
-                    total_score=cached_result["score"],
+                    pokemon=self.cached_pokemon,
+                    total_score=self.cached_score,
                 )
-                return match_result
-            except (Pokemon.DoesNotExist, ValueError):
-                print(
-                    f"DEBUG: Cached Pokemon {cached_result['pokemon_id']} not found in DB, performing full matching"
-                )
+            return match_result
 
-        # 2. If no cache - perform full matching
-        print("DEBUG: No cache found, performing full matching")
-        best_match = self.find_best_match()
+        # Perform fresh matching only if no cache
+        logger.debug(
+            f"Cache miss, performing full matching for hash {self.answers_hash[:8]}..."
+        )
+
+        # Get all Pokemon from database
+        pokemons = Pokemon.objects.all()
+        logger.debug(f"Found {pokemons.count()} Pokemon in database")
+
+        best_match = self._find_best_among_pokemons(pokemons)
 
         if best_match:
             pokemon, total_score = best_match
-            print(f"DEBUG: Best match found: {pokemon.name} with score {total_score}")
+            logger.debug(f"Best match found: {pokemon.name} with score {total_score}")
 
-            # 3. Cache the result for future requests
+            # Cache the result for future requests
             cache_match_result(self.answers_hash, pokemon.id, total_score)
 
-            # 4. Save the result
-            match_result = MatchResult.objects.create(
-                user_profile=self.user_profile, pokemon=pokemon, total_score=total_score
-            )
+            # Save to database
+            with transaction.atomic():
+                match_result = MatchResult.objects.create(
+                    user_profile=self.user_profile,
+                    pokemon=pokemon,
+                    total_score=total_score,
+                )
+
             return match_result
 
-        print("DEBUG: No match found")
+        logger.debug("No match found")
         return None
 
     def _calculate_match_score(self, pokemon: Pokemon) -> float:
         """Calculates overall match score"""
-        type_score = self._score_types(pokemon.types, self.match_profile["types"])
-        color_score = self._score_color(pokemon.color, self.match_profile["color"])
-        habitat_score = self._score_habitat(
-            pokemon.habitat, self.match_profile["habitat"]
-        )
+        type_score = self._score_types(pokemon.types, self.match_profile.types)
+        color_score = self._score_color(pokemon.color, self.match_profile.color)
+        habitat_score = self._score_habitat(pokemon.habitat, self.match_profile.habitat)
         ability_score = self._score_abilities(
-            pokemon.abilities, self.match_profile["ability_keywords"]
+            pokemon.abilities, self.match_profile.ability_keywords
         )
         stats_score = self._score_base_stats(
-            pokemon, self.match_profile["personality_tags"]
+            pokemon, self.match_profile.personality_tags
         )
         personality_score = self._score_personality(
-            pokemon, self.match_profile["personality_tags"]
+            pokemon, self.match_profile.personality_tags
         )
 
         total_score = (

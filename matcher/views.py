@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
+from rest_framework.exceptions import NotFound, ValidationError
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -13,9 +14,6 @@ from pokemons.serializers import PokemonModelSerializer
 
 from .exceptions import (
     MatchingFailed,
-    NoAnswersProvided,
-    NoSuitablePokemon,
-    UserProfileNotFound,
 )
 from .matching_engine import MatchingEngine
 
@@ -103,14 +101,14 @@ class MatchPokemonView(APIView):
 
             # Check if user has answers
             if not user_profile.answers:
-                raise NoAnswersProvided()
+                raise ValidationError("User profile has no answers")
 
             # Create matching engine and find best Pokemon
             engine = MatchingEngine(user_profile)
             match_result = engine.find_and_save_match()
 
             if not match_result:
-                raise NoSuitablePokemon()
+                raise NotFound("No suitable Pokemon found for this profile")
 
             # Form response with full Pokemon information
             pokemon_data = PokemonModelSerializer(match_result.pokemon).data
@@ -126,10 +124,7 @@ class MatchPokemonView(APIView):
             )
 
         except Http404:
-            raise UserProfileNotFound()
-        except (NoAnswersProvided, NoSuitablePokemon):
-            # Re-raise custom exceptions
-            raise
+            raise NotFound("User profile not found")
         except Exception as e:
             # Log unexpected errors for debugging
             logger.error(f"Matching failed: {str(e)}")

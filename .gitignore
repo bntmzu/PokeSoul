@@ -29,6 +29,10 @@ staticfiles/
 instance/
 local_settings.py
 
+# Logs
+logs/
+*.log
+
 # Ignore all migration cache and compiled files
 **/migrations/__pycache__/
 **/migrations/*.pyc
