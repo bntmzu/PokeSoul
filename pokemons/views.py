@@ -7,6 +7,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from pokemons.cache import get_pokemon_from_cache, set_pokemon_to_cache
+from pokemons.exceptions import (
+    InvalidPokemonData,
+    PokemonAPIUnavailable,
+)
 from pokemons.models import Pokemon
 from pokemons.pokeapi import PokemonAPIError, get_full_pokemon_data
 from pokemons.serializers import PokemonDataSerializer, PokemonModelSerializer
@@ -38,9 +42,7 @@ class PokemonSearchView(APIView):
     def post(self, request):
         name = request.data.get("name")
         if not name:
-            return Response(
-                {"error": "Missing 'name'"}, status=status.HTTP_400_BAD_REQUEST
-            )
+            raise ValidationError("Pokemon name is required")
 
         try:
             # 1. Redis cache
@@ -69,17 +71,11 @@ class PokemonSearchView(APIView):
             return Response(model_serializer.data, status=status.HTTP_200_OK)
 
         except ValidationError:
-            return Response(
-                {"error": "Invalid data from PokeAPI"},
-                status=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            )
+            raise InvalidPokemonData()
         except PokemonAPIError as e:
-            return Response({"error": str(e)}, status=status.HTTP_502_BAD_GATEWAY)
+            raise PokemonAPIUnavailable(detail=str(e))
         except Exception as e:
-            return Response(
-                {"error": "Unexpected server error", "details": str(e)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            )
+            raise PokemonAPIUnavailable(detail=f"Unexpected error: {str(e)}")
 
     def get_pokemon_from_db(self, name):
         try:

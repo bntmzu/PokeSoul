@@ -1,15 +1,14 @@
 import pytest
 
-from matcher.matching_engine import MatchingEngine
 from matcher.tests.factories import PokemonFactory, UserProfileFactory
-from pokemons.models import Pokemon
+from matcher.tests.test_utils import SimpleMatchingEngine
 
 
 @pytest.mark.django_db
 @pytest.mark.parametrize(
     "profile_answers,expected_pokemon_name",
     [
-        # Case 1: prefers fire + mountain → should match Firemon
+        # Test case 1: Fire-type preference with mountain habitat
         (
             {
                 "time_of_day": "fire_red",
@@ -20,7 +19,7 @@ from pokemons.models import Pokemon
             },
             "Firemon",
         ),
-        # Case 2: prefers water + sea → should match Aquamon
+        # Test case 2: Water-type preference with sea habitat
         (
             {
                 "time_of_day": "water_blue",
@@ -31,7 +30,7 @@ from pokemons.models import Pokemon
             },
             "Aquamon",
         ),
-        # Case 3: prefers speed and forest → should match Speedmon
+        # Test case 3: Grass-type preference with speed focus
         (
             {
                 "time_of_day": "grass_green",
@@ -45,7 +44,8 @@ from pokemons.models import Pokemon
     ],
 )
 def test_matching_engine(profile_answers, expected_pokemon_name):
-    # Create test pokemons
+    """Test matching engine with different personality profiles"""
+    # Create test pokemons with specific characteristics
     PokemonFactory(
         name="Firemon",
         types=["fire"],
@@ -81,63 +81,13 @@ def test_matching_engine(profile_answers, expected_pokemon_name):
         popularity_score=30,
     )
 
-    # Create user profile
+    # Create user profile with test answers
     user_profile = UserProfileFactory(answers=profile_answers)
-
-    # Create a simple matching engine that doesn't use PreferenceExtractor
-    class SimpleMatchingEngine(MatchingEngine):
-        def __init__(self, user_profile):
-            self.user_profile = user_profile
-            # Create a simple match profile based on answers
-            self.match_profile = self._create_simple_profile()
-            # Add missing answers_hash attribute for caching
-            self.answers_hash = "test_hash"
-
-        def _create_simple_profile(self):
-            """Create a simple match profile from answers"""
-            profile = {
-                "types": [],
-                "color": None,
-                "habitat": None,
-                "ability_keywords": [],
-                "personality_tags": [],
-                "stat_preferences": {},
-            }
-
-            # Extract types from answers
-            if "element_resonance" in self.user_profile.answers:
-                profile["types"].append(self.user_profile.answers["element_resonance"])
-
-            # Extract color
-            if "favorite_color" in self.user_profile.answers:
-                profile["color"] = self.user_profile.answers["favorite_color"]
-
-            # Extract habitat
-            if "place_you_belong" in self.user_profile.answers:
-                profile["habitat"] = self.user_profile.answers["place_you_belong"]
-
-            # Extract stat preferences
-            if "conflict_handling" in self.user_profile.answers:
-                stat = self.user_profile.answers["conflict_handling"]
-                profile["stat_preferences"][stat] = 1
-
-            return profile
 
     # Run matcher
     engine = SimpleMatchingEngine(user_profile)
 
-    # Debug: show all pokemons and their scores
-    print(f"\nExpected: {expected_pokemon_name}")
-    print(f"Match profile: {engine.match_profile}")
-    print("All pokemons and their scores:")
-    for pokemon in Pokemon.objects.all():
-        score = engine._calculate_match_score(pokemon)
-        print(
-            f"  {pokemon.name}: {score:.4f} (types: {pokemon.types}, color: {pokemon.color}, habitat: {pokemon.habitat})"
-        )
-
     result = engine.find_and_save_match()
 
     assert result is not None
-    print(f"Matched: {result.pokemon.name}, score: {result.total_score}")
     assert result.pokemon.name == expected_pokemon_name

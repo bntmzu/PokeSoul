@@ -181,6 +181,7 @@ docker-compose -f docker/docker-compose.prod.yml up -d
 - **Resource limits**: Memory and CPU constraints
 - **Nginx**: Optional reverse proxy for SSL termination
 - **Health checks**: Built-in monitoring for all services
+- **Structured logging**: JSON logs for production monitoring
 
 ## Dockerfile Features
 
@@ -230,12 +231,47 @@ docker-compose -f docker/docker-compose.yml up --build
 docker stats
 ```
 
+## Logging & Monitoring
+
+### **Log Files in Docker:**
+- **Application logs**: Available in container logs
+- **File logs**: Mounted to host for persistence (`./logs:/app/logs`)
+- **JSON logs**: Structured format for monitoring tools
+- **Auto-creation**: Log directory created automatically in containers
+
+### **View Logs:**
+```bash
+# View application logs
+docker-compose -f docker/docker-compose.yml logs -f web
+
+# View specific service logs
+docker-compose -f docker/docker-compose.yml logs -f db
+docker-compose -f docker/docker-compose.yml logs -f redis
+
+# View logs with timestamps
+docker-compose -f docker/docker-compose.yml logs -f --timestamps web
+```
+
+### **Log Levels:**
+- **DEBUG**: Detailed application logs (development)
+- **INFO**: Performance metrics and request tracking
+- **WARNING**: Non-critical issues
+- **ERROR**: Application errors and exceptions
+
+### **Performance Monitoring:**
+The application automatically logs:
+- Request duration and status codes
+- Cache hits/misses with truncated hashes
+- Matching algorithm performance
+- API response times
+
 ## Performance Tips
 
 1. **Use volumes for development**: Code changes are reflected immediately
 2. **Health checks**: Ensure services are ready before starting dependent services
 3. **Restart policies**: Services restart automatically on failure
 4. **Resource limits**: Consider adding memory/CPU limits for production
+5. **Log monitoring**: Use structured logs for performance analysis
 
 ## Security Notes
 

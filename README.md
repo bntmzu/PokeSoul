@@ -35,6 +35,7 @@ cd PokeSoul
 - **Beautiful UI**: Modern, responsive design with spring gradient theme
 - **REST API**: Full API with OpenAPI/Swagger JSON schema
 - **Caching**: Redis-based caching for improved performance
+- **Structured Logging**: Comprehensive logging system with performance monitoring
 - **Docker Support**: Complete containerization with PostgreSQL and Redis
 - **Health Checks**: Built-in monitoring for all services
 
@@ -102,6 +103,43 @@ cd PokeSoul
 ```bash
 # Run all tests
 poetry run pytest
+```
+
+## 📊 Logging & Monitoring
+
+PokeSoul includes a comprehensive logging system for development and production:
+
+### **Logging Features:**
+- **Structured Logging**: JSON and verbose formats
+- **Performance Monitoring**: Request duration and status tracking
+- **Security**: Truncated hashes and safe data handling
+- **Multiple Handlers**: Console, file, and JSON file outputs
+
+### **Log Files:**
+- `logs/pokesoul.log` - Verbose application logs
+- `logs/pokesoul.json` - Structured JSON logs
+
+**Note**: Log files are automatically created and mounted in Docker containers
+
+### **Log Levels:**
+- **DEBUG**: Detailed matching algorithm logs
+- **INFO**: Performance metrics and request tracking
+- **WARNING**: Non-critical issues
+- **ERROR**: Application errors and exceptions
+
+### **Performance Monitoring:**
+The application automatically logs:
+- Request duration and status codes
+- Cache hits/misses
+- Matching algorithm performance
+- API response times
+
+### **Example Logs:**
+```
+DEBUG: PerformanceLoggingMiddleware: Starting request GET /quiz/
+INFO: Request GET /quiz/ - Status: 200 - Duration: 0.040s
+DEBUG: Cache hit for hash 871c4905... (truncated)
+DEBUG: Best match found: charizard with score 0.85
 ```
 
 ## 🐳 Docker Commands
@@ -323,9 +361,14 @@ Since the Swagger UI doesn't render properly in the browser, you can:
 ```env
 DEBUG=True
 SECRET_KEY=your-secret-key
-DATABASE_URL=postgresql://user:pass@localhost:5432/db
-REDIS_HOST=localhost
+NAME=pokesoul
+USER=pokesoul
+PASSWORD=pokesoul
+HOST=db
+PORT=5432
+REDIS_HOST=redis
 REDIS_PORT=6379
+REDIS_DB=0
 ```
 
 ### Database

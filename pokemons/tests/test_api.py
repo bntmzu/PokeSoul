@@ -13,7 +13,7 @@ def api_client():
 
 @pytest.mark.django_db
 def test_serializer_directly():
-    """Direct serializer test"""
+    """Test PokemonModelSerializer validation and creation"""
     data = {
         "name": "test",
         "types": ["normal"],
@@ -37,6 +37,8 @@ def test_serializer_directly():
 
 @pytest.mark.django_db
 def test_match_existing_pokemon_in_db(api_client):
+    """Test Pokemon search API with existing database record"""
+    # Create test Pokemon in database
     Pokemon.objects.create(
         name="bulbasaur",
         types=["grass", "poison"],
@@ -55,7 +57,7 @@ def test_match_existing_pokemon_in_db(api_client):
     response = api_client.post(url, {"name": "bulbasaur"}, format="json")
     assert response.status_code == 200
     assert response.data["name"] == "bulbasaur"
-    # Check the new base_stats structure
+    # Verify the new base_stats structure is returned
     assert "base_stats" in response.data
     assert response.data["base_stats"]["hp"] == 45
     assert response.data["base_stats"]["attack"] == 49
@@ -63,22 +65,27 @@ def test_match_existing_pokemon_in_db(api_client):
 
 @pytest.mark.django_db
 def test_match_invalid_pokemon(api_client):
+    """Test Pokemon search API with non-existent Pokemon name"""
     url = reverse("pokemon-search")
     response = api_client.post(url, {"name": "invalidmon"}, format="json")
     assert response.status_code in [502, 422]
-    assert "error" in response.data
+    assert "detail" in response.data
 
 
 @pytest.mark.django_db
 def test_match_missing_name(api_client):
+    """Test Pokemon search API with missing required 'name' parameter"""
     url = reverse("pokemon-search")
     response = api_client.post(url, {}, format="json")
     assert response.status_code == 400
-    assert "error" in response.data
+    # For ValidationError, response.data is a list of errors
+    assert len(response.data) > 0
 
 
 @pytest.mark.django_db
 def test_list_pokemons(api_client):
+    """Test Pokemon list API endpoint"""
+    # Create test Pokemon for listing
     Pokemon.objects.create(
         name="pikachu",
         types=["electric"],
